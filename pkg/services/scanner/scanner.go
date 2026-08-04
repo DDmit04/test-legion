@@ -2,10 +2,12 @@ package scanner
 
 import (
 	"context"
+	"fmt"
 	"sync"
-	"test-legion/pkg/models"
-	"test-legion/pkg/models/generator"
 	"time"
+
+	"github.com/DDmit04/test-legion/pkg/models"
+	"github.com/DDmit04/test-legion/pkg/models/generator"
 )
 
 type Scanner struct {
@@ -29,7 +31,9 @@ func (s *Scanner) Scan(
 	portsGen generator.ValueGenerator[int],
 ) (chan models.PortScanResult, error) {
 
-	dataChan := make(chan models.PortScanResult, hostsGen.Len()+portsGen.Len())
+	totalChecks := hostsGen.Len() * portsGen.Len()
+	fmt.Printf("total checks: %d\n", totalChecks)
+	dataChan := make(chan models.PortScanResult, totalChecks)
 	sem := make(chan struct{}, s.connections)
 	wg := sync.WaitGroup{}
 
@@ -41,7 +45,6 @@ hostLoop:
 				break hostLoop
 			default:
 				wg.Add(1)
-				sem <- struct{}{}
 				go s.requester.scanPort(ctx, &wg, sem, dataChan, hst, prt)
 			}
 

@@ -6,8 +6,9 @@ import (
 	"net"
 	"strconv"
 	"sync"
-	"test-legion/pkg/models"
 	"time"
+
+	"github.com/DDmit04/test-legion/pkg/models"
 )
 
 type Requester struct {
@@ -27,10 +28,18 @@ func (r *Requester) scanPort(
 	port int,
 ) {
 
+	sem <- struct{}{}
 	defer func() {
 		<-sem
 		wg.Done()
 	}()
+
+	select {
+	case <-ctx.Done():
+		return
+	default:
+
+	}
 
 	select {
 	case <-ctx.Done():
@@ -43,9 +52,6 @@ func (r *Requester) scanPort(
 			Err:      nil,
 		}
 	default:
-
-		time.Sleep(1 * time.Second)
-
 		start := time.Now()
 		target := domain.Host
 		if len(target) == 0 {
@@ -73,6 +79,8 @@ func (r *Requester) scanPort(
 				Duration: 0,
 				Err:      nil,
 			}
+
+			return
 		default:
 			dataChannel <- models.PortScanResult{
 				Host:     domain.Host,
@@ -82,6 +90,7 @@ func (r *Requester) scanPort(
 				Duration: duration,
 				Err:      err,
 			}
+			return
 		}
 	}
 }

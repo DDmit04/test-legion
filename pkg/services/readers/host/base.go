@@ -4,8 +4,9 @@ import (
 	"fmt"
 	"net"
 	"regexp"
-	"test-legion/pkg/models/exceptions"
-	"test-legion/pkg/services/readers"
+
+	"github.com/DDmit04/test-legion/pkg/models/exceptions"
+	"github.com/DDmit04/test-legion/pkg/services/readers"
 )
 
 const (

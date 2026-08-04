@@ -2,25 +2,22 @@ package host
 
 import (
 	"fmt"
-	"reflect"
-	"test-legion/pkg/models"
-	"test-legion/pkg/models/generator"
-	rdrs "test-legion/pkg/services/readers"
+
+	"github.com/DDmit04/test-legion/pkg/models"
+	"github.com/DDmit04/test-legion/pkg/models/generator"
+	"github.com/DDmit04/test-legion/pkg/models/input"
+	rdrs "github.com/DDmit04/test-legion/pkg/services/readers"
 )
 
-type ArgsType interface {
-	~[]string
-}
-
-var hostReaders = []rdrs.HostReader{
+var hostReaders = []rdrs.Reader[models.DomainInfo]{
 	NewListReader(),
 }
 
-func ReadHosts[T ArgsType](ports T) (generator.ValueGenerator[models.DomainInfo], error) {
+func ReadHosts(hosts input.Model) (generator.ValueGenerator[models.DomainInfo], error) {
 	for _, reader := range hostReaders {
-		canRead := reader.CanRead(reflect.TypeOf(ports))
+		canRead := reader.CanRead(hosts.InputType())
 		if canRead {
-			return reader.Read(ports)
+			return reader.Read(hosts)
 		}
 	}
 	return nil, fmt.Errorf("not expected generator type")

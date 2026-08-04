@@ -3,8 +3,9 @@ package generator
 import (
 	"iter"
 	"sync"
-	"test-legion/pkg/models"
-	"test-legion/pkg/models/exceptions"
+
+	"github.com/DDmit04/test-legion/pkg/models"
+	"github.com/DDmit04/test-legion/pkg/models/exceptions"
 )
 
 type HostsList struct {

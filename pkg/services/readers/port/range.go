@@ -2,12 +2,13 @@ package port
 
 import (
 	"fmt"
-	"reflect"
 	"strconv"
 	"strings"
-	"test-legion/pkg/models/exceptions"
-	"test-legion/pkg/models/generator"
-	"test-legion/pkg/services/readers"
+
+	"github.com/DDmit04/test-legion/pkg/models/exceptions"
+	"github.com/DDmit04/test-legion/pkg/models/generator"
+	"github.com/DDmit04/test-legion/pkg/models/input"
+	"github.com/DDmit04/test-legion/pkg/services/readers"
 )
 
 const rangeSeparator = "-"
@@ -20,14 +21,22 @@ func NewRangeReader() *RangeReader {
 	return &RangeReader{
 		BasePortReader: BasePortReader{
 			BaseReader: readers.BaseReader{
-				ReadType: reflect.TypeOf(""),
+				ReadType: input.PortsRangeInputType,
 			},
 		},
 	}
 }
 
-func (r *RangeReader) Read(data any) (generator.ValueGenerator[int], error) {
-	rang := data.(string)
+func (r *RangeReader) Read(data input.Model) (generator.ValueGenerator[int], error) {
+
+	rang := ""
+	if dataStr, ok := data.Value().(string); ok {
+		rang = dataStr
+	} else {
+		msg := fmt.Sprintf("expected string, got %T", data)
+		return nil, exceptions.InputDataMisMatch(msg)
+	}
+
 	start, end, err := r.parseRange(rang)
 	if err != nil {
 		return nil, err

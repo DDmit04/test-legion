@@ -3,17 +3,16 @@ package main
 import (
 	"context"
 	"fmt"
-	"test-legion/pkg/models"
-	"test-legion/pkg/services/readers/host"
-	"test-legion/pkg/services/readers/port"
-	"test-legion/pkg/services/scanner"
 	"time"
+
+	"github.com/DDmit04/test-legion/pkg/models"
+	"github.com/DDmit04/test-legion/pkg/models/input"
+	"github.com/DDmit04/test-legion/pkg/services/readers/host"
+	"github.com/DDmit04/test-legion/pkg/services/readers/port"
+	"github.com/DDmit04/test-legion/pkg/services/scanner"
 )
 
-func Scan[T host.ArgsType, V port.ArgTypes](ctx context.Context, hosts T, ports V, connections int, timeout time.Duration) (chan models.PortScanResult, error) {
-	ctx, cancel := context.WithTimeout(context.Background(), 6*time.Second)
-	defer cancel()
-
+func Scan(ctx context.Context, hosts input.Model, ports input.Model, connections int, timeout time.Duration) (chan models.PortScanResult, error) {
 	hostsGen, err := host.ReadHosts(hosts)
 	if err != nil {
 		return nil, err
@@ -24,7 +23,9 @@ func Scan[T host.ArgsType, V port.ArgTypes](ctx context.Context, hosts T, ports 
 	}
 
 	scn := scanner.NewScanner(connections, timeout)
+
 	channel, err := scn.Scan(ctx, hostsGen, portsGen)
+
 	if err != nil {
 		return nil, err
 	}
@@ -33,11 +34,12 @@ func Scan[T host.ArgsType, V port.ArgTypes](ctx context.Context, hosts T, ports 
 }
 
 func main() {
-	ctx, cancel := context.WithTimeout(context.Background(), 6*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
-	channel, _ := Scan(ctx, []string{"google.com", "yandex.ru"}, []int{80, 21}, 5, time.Second)
+	hosts, _ := input.CreateHostsListInput([]string{"yandex.ru", "google.com"})
+	ports, _ := input.CreatePortsListInput([]int{80, 21})
+	channel, _ := Scan(ctx, hosts, ports, 1, 1*time.Second)
 	for val := range channel {
 		fmt.Println(val)
 	}
-
 }

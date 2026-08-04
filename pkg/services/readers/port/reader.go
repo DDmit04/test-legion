@@ -2,23 +2,20 @@ package port
 
 import (
 	"fmt"
-	"reflect"
-	"test-legion/pkg/models/generator"
-	rdrs "test-legion/pkg/services/readers"
+
+	"github.com/DDmit04/test-legion/pkg/models/generator"
+	"github.com/DDmit04/test-legion/pkg/models/input"
+	rdrs "github.com/DDmit04/test-legion/pkg/services/readers"
 )
 
-type ArgTypes interface {
-	~[]int | ~string
-}
-
-var portsReaders = []rdrs.PortReader{
+var portsReaders = []rdrs.Reader[int]{
 	NewListReader(),
 	NewRangeReader(),
 }
 
-func ReadPorts[T ArgTypes](ports T) (generator.ValueGenerator[int], error) {
+func ReadPorts(ports input.Model) (generator.ValueGenerator[int], error) {
 	for _, reader := range portsReaders {
-		canRead := reader.CanRead(reflect.TypeOf(ports))
+		canRead := reader.CanRead(ports.InputType())
 		if canRead {
 			return reader.Read(ports)
 		}

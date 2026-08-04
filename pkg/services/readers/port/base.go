@@ -1,8 +1,12 @@
 package port
 
 import (
-	"test-legion/pkg/models/exceptions"
-	"test-legion/pkg/services/readers"
+	"github.com/DDmit04/test-legion/pkg/models/exceptions"
+	"github.com/DDmit04/test-legion/pkg/services/readers"
+)
+
+const (
+	maxPort = 65535
 )
 
 type BasePortReader struct {
@@ -16,7 +20,7 @@ func (p *BasePortReader) validatePort(port int) *exceptions.ModuleException {
 	if port == 0 {
 		return exceptions.ZeroPortValue()
 	}
-	if port > 65535 {
+	if port > maxPort {
 		return exceptions.TooHighPortValue()
 	}
 	return nil

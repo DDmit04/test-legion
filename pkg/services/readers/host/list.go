@@ -2,12 +2,14 @@ package host
 
 import (
 	"fmt"
-	"reflect"
 	"regexp"
-	"test-legion/pkg/models"
-	"test-legion/pkg/models/generator"
-	"test-legion/pkg/services/readers"
-	"test-legion/tools"
+
+	"github.com/DDmit04/test-legion/pkg/models"
+	"github.com/DDmit04/test-legion/pkg/models/exceptions"
+	"github.com/DDmit04/test-legion/pkg/models/generator"
+	"github.com/DDmit04/test-legion/pkg/models/input"
+	"github.com/DDmit04/test-legion/pkg/services/readers"
+	"github.com/DDmit04/test-legion/tools"
 )
 
 type ListReader struct {
@@ -18,14 +20,20 @@ func NewListReader() *ListReader {
 	return &ListReader{
 		BaseHostReader: BaseHostReader{
 			BaseReader: readers.BaseReader{
-				ReadType: reflect.TypeOf(make([]string, 0)),
+				ReadType: input.HostsListInputType,
 			},
 		},
 	}
 }
 
-func (r *ListReader) Read(data any) (generator.ValueGenerator[models.DomainInfo], error) {
-	sources := tools.UniqueStringsList(data.([]string))
+func (r *ListReader) Read(data input.Model) (generator.ValueGenerator[models.DomainInfo], error) {
+	sources := make([]string, 0)
+	if dataString, ok := data.Value().([]string); ok {
+		sources = tools.UniqueStringsList(dataString)
+	} else {
+		msg := fmt.Sprintf("expected []string, got %T", data)
+		return nil, exceptions.InputDataMisMatch(msg)
+	}
 	res := make([]models.DomainInfo, 0)
 	for _, source := range sources {
 		validateErr := r.validateHost(source)
