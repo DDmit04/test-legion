@@ -4,8 +4,8 @@ import (
 	"iter"
 	"sync"
 
-	"github.com/DDmit04/test-legion/pkg/models"
-	"github.com/DDmit04/test-legion/pkg/models/exceptions"
+	"github.com/DDmit04/test-legion/src/internal/models"
+	"github.com/DDmit04/test-legion/src/internal/models/exceptions"
 )
 
 type HostsList struct {

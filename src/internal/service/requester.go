@@ -1,4 +1,4 @@
-package scanner
+package service
 
 import (
 	"context"
@@ -8,7 +8,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/DDmit04/test-legion/pkg/models"
+	models2 "github.com/DDmit04/test-legion/src/internal/models"
+	"github.com/DDmit04/test-legion/src/models"
 )
 
 type Requester struct {
@@ -19,12 +20,12 @@ func NewRequester(timeout time.Duration) *Requester {
 	return &Requester{timeout: timeout}
 }
 
-func (r *Requester) scanPort(
+func (r *Requester) ScanPort(
 	ctx context.Context,
 	wg *sync.WaitGroup,
 	sem chan struct{},
 	dataChannel chan models.PortScanResult,
-	domain models.DomainInfo,
+	domain models2.DomainInfo,
 	port int,
 ) {
 

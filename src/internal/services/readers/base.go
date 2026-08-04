@@ -1,8 +1,8 @@
 package readers
 
 import (
-	"github.com/DDmit04/test-legion/pkg/models/generator"
-	"github.com/DDmit04/test-legion/pkg/models/input"
+	"github.com/DDmit04/test-legion/src/internal/models/generator"
+	"github.com/DDmit04/test-legion/src/models/input"
 )
 
 type Reader[T any] interface {

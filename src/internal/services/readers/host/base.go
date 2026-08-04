@@ -5,8 +5,8 @@ import (
 	"net"
 	"regexp"
 
-	"github.com/DDmit04/test-legion/pkg/models/exceptions"
-	"github.com/DDmit04/test-legion/pkg/services/readers"
+	exceptions2 "github.com/DDmit04/test-legion/src/internal/models/exceptions"
+	"github.com/DDmit04/test-legion/src/internal/services/readers"
 )
 
 const (
@@ -19,18 +19,18 @@ type BaseHostReader struct {
 	readers.BaseReader
 }
 
-func (r *BaseHostReader) validateHost(host string) *exceptions.ModuleException {
+func (r *BaseHostReader) validateHost(host string) *exceptions2.ModuleException {
 	match, _ := regexp.MatchString(ipv4Regex+`|`+ipv6Regex+`|`+domainRegex, host)
 	if !match {
-		return exceptions.InvalidHost(fmt.Sprintf(": %s", host))
+		return exceptions2.InvalidHost(fmt.Sprintf(": %s", host))
 	}
 	return nil
 }
 
-func (r *BaseHostReader) validateIp(ip string) (net.IP, *exceptions.ModuleException) {
+func (r *BaseHostReader) validateIp(ip string) (net.IP, *exceptions2.ModuleException) {
 	res := net.ParseIP(ip)
 	if res == nil {
-		return nil, exceptions.InvalidIp(fmt.Sprintf(": %s", ip))
+		return nil, exceptions2.InvalidIp(fmt.Sprintf(": %s", ip))
 	}
 	return res, nil
 }
@@ -39,7 +39,7 @@ func (r *BaseHostReader) extractDomainIps(domain string) ([]net.IP, error) {
 	var res []net.IP
 	ips, err := net.LookupIP(domain)
 	if err != nil {
-		return nil, exceptions.HostIpsReadError(fmt.Sprintf("error host - \"%s\"", domain))
+		return nil, exceptions2.HostIpsReadError(fmt.Sprintf("error host - \"%s\"", domain))
 	}
 	for _, ip := range ips {
 		if ipv4 := ip.To4(); ipv4 != nil {

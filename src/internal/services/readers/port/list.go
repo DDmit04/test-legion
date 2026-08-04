@@ -3,11 +3,11 @@ package port
 import (
 	"fmt"
 
-	"github.com/DDmit04/test-legion/pkg/models/exceptions"
-	"github.com/DDmit04/test-legion/pkg/models/generator"
-	"github.com/DDmit04/test-legion/pkg/models/input"
-	"github.com/DDmit04/test-legion/pkg/services/readers"
-	"github.com/DDmit04/test-legion/tools"
+	"github.com/DDmit04/test-legion/src/internal/models/exceptions"
+	generator2 "github.com/DDmit04/test-legion/src/internal/models/generator"
+	"github.com/DDmit04/test-legion/src/internal/services/readers"
+	"github.com/DDmit04/test-legion/src/internal/tools"
+	"github.com/DDmit04/test-legion/src/models/input"
 )
 
 type ListReader struct {
@@ -24,7 +24,7 @@ func NewListReader() *ListReader {
 	}
 }
 
-func (r *ListReader) Read(data input.Model) (generator.ValueGenerator[int], error) {
+func (r *ListReader) Read(data input.Model) (generator2.ValueGenerator[int], error) {
 	prts := make([]int, 0)
 	if dataInts, ok := data.Value().([]int); ok {
 		prts = tools.UniqueIntsList(dataInts)
@@ -38,5 +38,5 @@ func (r *ListReader) Read(data input.Model) (generator.ValueGenerator[int], erro
 			validateErr = validateErr.WithMsg(fmt.Sprintf("error port - \"%d\"", port))
 		}
 	}
-	return generator.NewPortsList(prts), nil
+	return generator2.NewPortsList(prts), nil
 }

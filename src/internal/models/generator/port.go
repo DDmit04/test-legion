@@ -5,7 +5,7 @@ import (
 	"math"
 	"sync"
 
-	"github.com/DDmit04/test-legion/pkg/models/exceptions"
+	"github.com/DDmit04/test-legion/src/internal/models/exceptions"
 )
 
 type PortsRange struct {
