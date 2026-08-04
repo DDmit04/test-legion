@@ -22,11 +22,13 @@ func main() {
 	//создание и валидация данных портов и хостов
 	hosts, err := input.CreateHostsListInput([]string{"yandex.ru", "google.com"})
 	if err != nil {
+		// ошибки валидации данных
 		panic(err)
 	}
 
 	ports, err := input.CreatePortsListInput([]int{80, 21})
 	if err != nil {
+		// ошибки валидации данных
 		panic(err)
 	}
 
@@ -34,9 +36,12 @@ func main() {
 	connections := 10
 	// время, по истичению которого порт будет отмечен как неответевший
 	timeout := 1 * time.Second
-	// функция сканирования - возвращает канал, в который пишутся результаты
-	channel, err := src.Scan(ctx, hosts, ports, connections, timeout)
+	scn := src.NewScanner(connections, timeout)
+	// функция сканирования - возвращает буферизированный канал, в который пишутся результаты
+	// как только все порты будут просканированы или сканирование будет прервано контекстом, канал будет закрыт
+	channel, err := scn.Scan(ctx, hosts, ports)
 	if err != nil {
+		// ошибки чтения данных
 		panic(err)
 	}
 
