@@ -17,6 +17,7 @@ func NewHostsList(hosts []models.DomainInfo) *HostsList {
 	return &HostsList{
 		BasePointerGenerator: BasePointerGenerator{
 			pointer: 0,
+			start:   0,
 			lock:    sync.Mutex{},
 		},
 		hosts: hosts,

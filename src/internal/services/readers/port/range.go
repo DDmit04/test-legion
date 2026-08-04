@@ -64,5 +64,8 @@ func (r *RangeReader) parseRange(rang string) (int, int, error) {
 	if err != nil {
 		return 0, 0, exceptions2.InvalidPortValue(fmt.Sprintf("port not a number - \"%s\"", parts[1]))
 	}
+	if start > end {
+		start, end = end, start
+	}
 	return start, end, nil
 }

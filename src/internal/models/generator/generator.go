@@ -14,11 +14,12 @@ type ValueGenerator[T any] interface {
 
 type BasePointerGenerator struct {
 	pointer int
+	start   int
 	lock    sync.Mutex
 }
 
 func (l *BasePointerGenerator) Reset() {
 	l.lock.Lock()
 	defer l.lock.Unlock()
-	l.pointer = 0
+	l.pointer = l.start
 }

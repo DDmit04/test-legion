@@ -54,8 +54,8 @@ func main() {
 
 ### Данные, доступные для ввода
 - `input.CreatePortsListInput` - принимает список портов в виде `[]int` 
+- `input.CreatePortsRangeInput` - принимает диопазон портов в виде `string` в формате `port-port`
 - `input.CreateHostsListInput` - принимает список хостов в виде `[]string`
-- `input.CreatePortsRangeInput` - принимает диопазон портов в виде `string`
 
 ### Возможные ошибки
 - `reader not found` - не удалось прочитать данные портов или хостов

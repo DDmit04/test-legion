@@ -20,6 +20,7 @@ func NewPortsRange(start int, end int) *PortsRange {
 		end:   end,
 		BasePointerGenerator: BasePointerGenerator{
 			pointer: start,
+			start:   start,
 			lock:    sync.Mutex{},
 		},
 	}
@@ -32,6 +33,7 @@ func (p *PortsRange) Len() int {
 func (p *PortsRange) Next() (int, error) {
 	p.lock.Lock()
 	defer p.lock.Unlock()
+
 	if p.pointer > p.end {
 		return 0, exceptions.PortsRangeEnds()
 	}
@@ -66,6 +68,7 @@ func NewPortsList(ports []int) *PortsList {
 		ports: ports,
 		BasePointerGenerator: BasePointerGenerator{
 			pointer: 0,
+			start:   0,
 			lock:    sync.Mutex{},
 		},
 	}
