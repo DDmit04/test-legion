@@ -5,8 +5,8 @@ import (
 	"strconv"
 	"strings"
 
-	exceptions2 "github.com/DDmit04/test-legion/src/internal/models/exceptions"
-	generator2 "github.com/DDmit04/test-legion/src/internal/models/generator"
+	"github.com/DDmit04/test-legion/src/internal/models/exceptions"
+	"github.com/DDmit04/test-legion/src/internal/models/generator"
 	"github.com/DDmit04/test-legion/src/internal/services/readers"
 	"github.com/DDmit04/test-legion/src/models/input"
 )
@@ -27,14 +27,14 @@ func NewRangeReader() *RangeReader {
 	}
 }
 
-func (r *RangeReader) Read(data input.Model) (generator2.ValueGenerator[int], error) {
+func (r *RangeReader) Read(data input.Model) (generator.ValueGenerator[int], error) {
 
 	rang := ""
 	if dataStr, ok := data.Value().(string); ok {
 		rang = dataStr
 	} else {
 		msg := fmt.Sprintf("expected string, got %T", data)
-		return nil, exceptions2.InputDataMisMatch(msg)
+		return nil, exceptions.InputDataMisMatch(msg)
 	}
 
 	start, end, err := r.parseRange(rang)
@@ -48,21 +48,21 @@ func (r *RangeReader) Read(data input.Model) (generator2.ValueGenerator[int], er
 			return nil, validateErr
 		}
 	}
-	return generator2.NewPortsRange(start, end), nil
+	return generator.NewPortsRange(start, end), nil
 }
 
 func (r *RangeReader) parseRange(rang string) (int, int, error) {
 	parts := strings.Split(rang, rangeSeparator)
 	if len(parts) != 2 {
-		return 0, 0, exceptions2.UnexpectedRangeFormat(fmt.Sprintf("invalid range - \"%s\"", rang))
+		return 0, 0, exceptions.UnexpectedRangeFormat(fmt.Sprintf("invalid range - \"%s\"", rang))
 	}
 	start, err := strconv.Atoi(parts[0])
 	if err != nil {
-		return 0, 0, exceptions2.InvalidPortValue(fmt.Sprintf("port not a number - \"%s\"", parts[0]))
+		return 0, 0, exceptions.InvalidPortValue(fmt.Sprintf("port not a number - \"%s\"", parts[0]))
 	}
 	end, err := strconv.Atoi(parts[1])
 	if err != nil {
-		return 0, 0, exceptions2.InvalidPortValue(fmt.Sprintf("port not a number - \"%s\"", parts[1]))
+		return 0, 0, exceptions.InvalidPortValue(fmt.Sprintf("port not a number - \"%s\"", parts[1]))
 	}
 	if start > end {
 		start, end = end, start

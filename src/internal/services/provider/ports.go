@@ -5,25 +5,25 @@ import (
 
 	"github.com/DDmit04/test-legion/src/internal/models/exceptions"
 	"github.com/DDmit04/test-legion/src/internal/models/generator"
-	rdrs "github.com/DDmit04/test-legion/src/internal/services/readers"
-	port2 "github.com/DDmit04/test-legion/src/internal/services/readers/port"
+	"github.com/DDmit04/test-legion/src/internal/services/readers"
+	"github.com/DDmit04/test-legion/src/internal/services/readers/port"
 	"github.com/DDmit04/test-legion/src/models/input"
 )
 
-var portsReaders = []rdrs.Reader[int]{
-	port2.NewListReader(),
-	port2.NewRangeReader(),
+var portsReaders = []readers.Reader[int]{
+	port.NewListReader(),
+	port.NewRangeReader(),
 }
 
 type PortsProvider struct {
-	Readers []rdrs.Reader[int]
+	Readers []readers.Reader[int]
 }
 
 func NewPortsProvider() *PortsProvider {
 	return &PortsProvider{
-		Readers: []rdrs.Reader[int]{
-			port2.NewListReader(),
-			port2.NewRangeReader(),
+		Readers: []readers.Reader[int]{
+			port.NewListReader(),
+			port.NewRangeReader(),
 		},
 	}
 }

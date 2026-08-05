@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/DDmit04/test-legion/src/internal/models/exceptions"
-	generator2 "github.com/DDmit04/test-legion/src/internal/models/generator"
+	"github.com/DDmit04/test-legion/src/internal/models/generator"
 	"github.com/DDmit04/test-legion/src/internal/services/readers"
 	"github.com/DDmit04/test-legion/src/internal/tools"
 	"github.com/DDmit04/test-legion/src/models/input"
@@ -24,7 +24,7 @@ func NewListReader() *ListReader {
 	}
 }
 
-func (r *ListReader) Read(data input.Model) (generator2.ValueGenerator[int], error) {
+func (r *ListReader) Read(data input.Model) (generator.ValueGenerator[int], error) {
 	prts := make([]int, 0)
 	if dataInts, ok := data.Value().([]int); ok {
 		prts = tools.UniqueIntsList(dataInts)
@@ -38,5 +38,5 @@ func (r *ListReader) Read(data input.Model) (generator2.ValueGenerator[int], err
 			validateErr = validateErr.WithMsg(fmt.Sprintf("error port - \"%d\"", port))
 		}
 	}
-	return generator2.NewPortsList(prts), nil
+	return generator.NewPortsList(prts), nil
 }

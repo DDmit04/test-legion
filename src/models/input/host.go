@@ -15,7 +15,7 @@ func CreateHostsListInput(hosts []string) (*HostsListInput, error) {
 		BaseInputModel: BaseInputModel{
 			value:        hosts,
 			inputType:    HostsListInputType,
-			expectedType: reflect.TypeOf([]string{}),
+			expectedType: reflect.TypeOf(hosts),
 		},
 	}
 	err := res.CheckType()

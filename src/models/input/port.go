@@ -16,7 +16,7 @@ func CreatePortsListInput(ports []int) (*PortsListInput, error) {
 		BaseInputModel: BaseInputModel{
 			value:        ports,
 			inputType:    PortsListInputType,
-			expectedType: reflect.TypeOf([]int{}),
+			expectedType: reflect.TypeOf(ports),
 		},
 	}
 	err := res.CheckType()
@@ -35,7 +35,7 @@ func CreatePortsRangeInput(portsRange string) (*PortsRangeInput, error) {
 		BaseInputModel: BaseInputModel{
 			value:        portsRange,
 			inputType:    PortsRangeInputType,
-			expectedType: reflect.TypeOf(""),
+			expectedType: reflect.TypeOf(portsRange),
 		},
 	}
 	err := res.CheckType()

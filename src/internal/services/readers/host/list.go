@@ -6,7 +6,7 @@ import (
 
 	"github.com/DDmit04/test-legion/src/internal/models"
 	"github.com/DDmit04/test-legion/src/internal/models/exceptions"
-	generator2 "github.com/DDmit04/test-legion/src/internal/models/generator"
+	"github.com/DDmit04/test-legion/src/internal/models/generator"
 	"github.com/DDmit04/test-legion/src/internal/services/readers"
 	"github.com/DDmit04/test-legion/src/internal/tools"
 	"github.com/DDmit04/test-legion/src/models/input"
@@ -26,7 +26,7 @@ func NewListReader() *ListReader {
 	}
 }
 
-func (r *ListReader) Read(data input.Model) (generator2.ValueGenerator[models.DomainInfo], error) {
+func (r *ListReader) Read(data input.Model) (generator.ValueGenerator[models.DomainInfo], error) {
 	sources := make([]string, 0)
 	if dataString, ok := data.Value().([]string); ok {
 		sources = tools.UniqueStringsList(dataString)
@@ -68,5 +68,5 @@ func (r *ListReader) Read(data input.Model) (generator2.ValueGenerator[models.Do
 		}
 
 	}
-	return generator2.NewHostsList(res), nil
+	return generator.NewHostsList(res), nil
 }

@@ -6,18 +6,18 @@ import (
 	"github.com/DDmit04/test-legion/src/internal/models"
 	"github.com/DDmit04/test-legion/src/internal/models/exceptions"
 	"github.com/DDmit04/test-legion/src/internal/models/generator"
-	rdrs "github.com/DDmit04/test-legion/src/internal/services/readers"
+	"github.com/DDmit04/test-legion/src/internal/services/readers"
 	"github.com/DDmit04/test-legion/src/internal/services/readers/host"
 	"github.com/DDmit04/test-legion/src/models/input"
 )
 
 type HostsProvider struct {
-	Readers []rdrs.Reader[models.DomainInfo]
+	Readers []readers.Reader[models.DomainInfo]
 }
 
 func NewHostsProvider() *HostsProvider {
 	return &HostsProvider{
-		Readers: []rdrs.Reader[models.DomainInfo]{
+		Readers: []readers.Reader[models.DomainInfo]{
 			host.NewListReader(),
 		},
 	}
