@@ -7,7 +7,7 @@ import (
 
 	intModels "github.com/DDmit04/test-legion/src/internal/models"
 	"github.com/DDmit04/test-legion/src/internal/models/generator"
-	"github.com/DDmit04/test-legion/src/internal/service"
+	"github.com/DDmit04/test-legion/src/internal/services"
 	intProvider "github.com/DDmit04/test-legion/src/internal/services/provider"
 	"github.com/DDmit04/test-legion/src/models"
 	"github.com/DDmit04/test-legion/src/models/input"
@@ -17,12 +17,12 @@ type Scanner struct {
 	connections int
 	timeout     time.Duration
 	data        chan models.PortScanResult
-	requester   *service.Requester
+	requester   *services.Requester
 }
 
 func NewScanner(connections int, timeout time.Duration) *Scanner {
 	return &Scanner{
-		requester:   service.NewRequester(timeout),
+		requester:   services.NewRequester(timeout),
 		connections: connections,
 		timeout:     timeout,
 	}

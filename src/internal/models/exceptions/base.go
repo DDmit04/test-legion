@@ -65,3 +65,9 @@ func (e ModuleException) WithCauseMsg() *ModuleException {
 	}
 	return &e
 }
+
+func UnexpectedError(msg ...string) *ModuleException {
+	return NewBaseException().
+		WithBaseMsg("unexpected error").
+		WithMsg(msg...)
+}

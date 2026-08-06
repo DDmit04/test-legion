@@ -10,11 +10,6 @@ import (
 	"github.com/DDmit04/test-legion/src/models/input"
 )
 
-var portsReaders = []readers.Reader[int]{
-	port.NewListReader(),
-	port.NewRangeReader(),
-}
-
 type PortsProvider struct {
 	Readers []readers.Reader[int]
 }
@@ -29,7 +24,7 @@ func NewPortsProvider() *PortsProvider {
 }
 
 func (r *PortsProvider) ReadData(ports input.Model) (generator.ValueGenerator[int], error) {
-	for _, reader := range portsReaders {
+	for _, reader := range r.Readers {
 		canRead := reader.CanRead(ports.InputType())
 		if canRead {
 			return reader.Read(ports)
